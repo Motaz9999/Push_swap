@@ -1,399 +1,269 @@
-# 🔄 push_swap - Sorting Algorithm Challenge
+# Push_swap
 
-<div align="center">
+A sorting algorithm project that sorts integers using two stacks and a limited set of operations, with the goal of minimizing the number of operations performed.
 
-![42 School Badge](https://img.shields.io/badge/42-push__swap-blue)
-![Language](https://img.shields.io/badge/language-C-orange)
-![Grade](https://img.shields.io/badge/grade-84%2F100-yellow)
-![Algorithm](https://img.shields.io/badge/algorithm-sorting-yellow)
+## 📖 Overview
 
-</div>
+Push_swap is a 42 school project that implements an efficient sorting algorithm using only two stacks (A and B) and a specific set of stack operations. The program reads a list of integers and outputs the optimal sequence of operations needed to sort them in ascending order.
 
-## 📋 About The Project
+## 🎯 Algorithm Implementation
 
-**push_swap** is an algorithmic project from the 42 school curriculum where you must sort a stack of random integers using a **limited set of operations**, with the goal of using the **minimum number of moves** possible.
+This implementation uses a **hybrid sorting approach**:
 
-This is not just about sorting—it's about:
-- Algorithmic optimization
-- Understanding complexity (Big O notation)
-- Problem-solving under constraints
-- Choosing the right algorithm for the job
+### Small Numbers (2-5 elements)
+- **2-3 elements**: Hardcoded optimizations using simple swap and rotate operations
+- **4-5 elements**: Extract smallest element(s) to stack B, sort remaining 3 in stack A, then push back
 
-## 🎯 Project Purpose
+### Large Numbers (6+ elements)
+- **Radix Sort with Index Normalization**
+  - Each number is assigned an index based on its relative position (0 to n-1)
+  - Sorts by processing each bit position from LSB to MSB
+  - Elements with bit 0 go to stack B, bit 1 stays in stack A
+  - After processing all elements, push everything back from B to A
+  - Repeat for each bit position until sorted
 
-The purpose of push_swap is to:
-- Sort a stack of integers efficiently
-- Work with only two stacks (stack A and stack B)
-- Use only specific allowed operations
-- Minimize the number of operations needed
-- Learn about different sorting algorithms and their complexities
-- Understand when to use which algorithm based on input size
+**Key Features:**
+- Index-based sorting eliminates the need to work with actual values
+- Efficient bit manipulation for decision making
+- Optimal for large datasets
+- Predictable operation counts
 
-## 📝 What I Learned
+## 🛠️ Project Structure
 
-Through this project, I gained deep understanding of:
+```
+Push_swap/
+├── includes/
+│   └── push_swap.h           # Header with structures and function prototypes
+├── src/
+│   ├── main.c                # Entry point and argument parsing
+│   ├── radixsort.c           # Radix sort implementation
+│   ├── sortstack.c           # Small number sorting (2-5) and sort dispatcher
+│   ├── normalization.c       # Index assignment for radix sort
+│   ├── vald_input.c          # Input validation and parsing
+│   ├── error_handle.c        # Error handling
+│   ├── stack_utils.c         # Stack basic operations (create, push, free, add)
+│   ├── stack_utils2.c        # Additional utilities (is_empty, pop)
+│   ├── ops_a.c               # Stack A operations (pa, sa, ra, rra)
+│   ├── ops_b.c               # Stack B operations (pb, sb, rb, rrb)
+│   └── ops_both.c            # Combined operations (rr, rrr)
+├── libft/                    # Custom C library
+├── Makefile                  # Build configuration
+└── checker_linux             # Checker program for validation
+```
 
-### Algorithmic Concepts
-- **Sorting Algorithms**: Insertion sort, quick sort, radix sort, merge sort concepts
-- **Algorithm Optimization**: Choosing and adapting algorithms for constraints
-- **Complexity Analysis**: Understanding O(n), O(n log n), O(n²)
-- **Stack Operations**: Working with stack data structures
-- **Edge Cases**: Handling small sets (3, 5 numbers) vs large sets (100, 500)
+## 🔧 Installation
 
-### Problem-Solving Strategies
-- **Divide and Conquer**: Breaking problems into smaller pieces
-- **Chunking**: Dividing data into manageable groups
-- **Cost Calculation**: Finding the cheapest move at each step
-- **Optimization**: Reducing operation count through smart choices
+### Prerequisites
+- GCC compiler
+- Make
+- Linux/Unix environment
 
-### Implementation Skills
-- **Doubly Linked Lists**: Efficient stack implementation
-- **Indexing**: Pre-processing data for faster sorting
-- **Median Finding**: Partitioning based on median values
-- **Move Optimization**: Combining operations when possible
-
-## 🎮 Allowed Operations
-
-You have two stacks: **Stack A** (contains all numbers initially) and **Stack B** (empty).
-
-### Swap Operations
-- `sa`: Swap first 2 elements of stack A
-- `sb`: Swap first 2 elements of stack B
-- `ss`: Execute `sa` and `sb` simultaneously
-
-### Push Operations
-- `pa`: Push top element from B to A
-- `pb`: Push top element from A to B
-
-### Rotate Operations (shift up)
-- `ra`: Rotate stack A (first element becomes last)
-- `rb`: Rotate stack B
-- `rr`: Execute `ra` and `rb` simultaneously
-
-### Reverse Rotate Operations (shift down)
-- `rra`: Reverse rotate stack A (last element becomes first)
-- `rrb`: Reverse rotate stack B
-- `rrr`: Execute `rra` and `rrb` simultaneously
-
-## 🎯 Grading Criteria
-
-Your grade depends on efficiency:
-
-| Test Size | Maximum Operations | Points |
-|-----------|-------------------|---------|
-| 3 numbers | ≤ 3 operations | Required |
-| 5 numbers | ≤ 12 operations | Required |
-| 100 numbers | < 700 operations | 5 points |
-| 100 numbers | < 900 operations | 4 points |
-| 100 numbers | < 1100 operations | 3 points |
-| 100 numbers | < 1300 operations | 2 points |
-| 100 numbers | < 1500 operations | 1 point |
-| 500 numbers | < 5500 operations | 5 points |
-| 500 numbers | < 7000 operations | 4 points |
-| 500 numbers | < 8500 operations | 3 points |
-| 500 numbers | < 10000 operations | 2 points |
-| 500 numbers | < 11500 operations | 1 point |
-
-**Minimum to pass: 80/100**
-
-## 🚀 How to Use
-
-### Compilation
+### Build
 
 ```bash
+# Clone the repository
 git clone https://github.com/Motaz9999/Push_swap.git
 cd Push_swap
+
+# Compile the project
 make
+
+# Clean object files
+make clean
+
+# Clean everything
+make fclean
+
+# Recompile
+make re
 ```
 
-This creates the `push_swap` executable.
+## 💻 Usage
 
-### Make Commands
-
-```bash
-make        # Compile push_swap
-make bonus  # Compile checker (if implemented)
-make clean  # Remove object files
-make fclean # Remove object files and executables
-make re     # Recompile everything
-```
-
-### Running the Program
+### Basic Usage
 
 ```bash
-# Basic usage
-./push_swap 3 2 1 5 4
+# Sort a list of integers
+./push_swap 3 2 1 0
 
-# Using variables
-ARG="4 67 3 87 23"; ./push_swap $ARG
+# With negative numbers
+./push_swap 5 -2 8 0 -9
 
-# Test with random numbers
-ARG=$(seq 1 100 | shuf); ./push_swap $ARG
-
-# Count operations
-ARG="4 67 3 87 23"; ./push_swap $ARG | wc -l
+# Single argument with space-separated numbers
+./push_swap "4 67 3 87 23"
 ```
 
 ### Output
-
-The program outputs the sequence of operations needed to sort:
-
+The program outputs the sequence of operations:
 ```bash
-$ ./push_swap 3 2 1
+./push_swap 3 2 1
 sa
 rra
+```
 
-$ ./push_swap 5 4 3 2 1
-pb
-pb
-sa
-pa
-pa
+### Available Operations
+
+| Operation | Description |
+|-----------|-------------|
+| `sa` | Swap first 2 elements of stack A |
+| `sb` | Swap first 2 elements of stack B |
+| `ss` | `sa` and `sb` simultaneously |
+| `pa` | Push top element from B to A |
+| `pb` | Push top element from A to B |
+| `ra` | Rotate A up (first → last) |
+| `rb` | Rotate B up (first → last) |
+| `rr` | `ra` and `rb` simultaneously |
+| `rra` | Reverse rotate A (last → first) |
+| `rrb` | Reverse rotate B (last → first) |
+| `rrr` | `rra` and `rrb` simultaneously |
+
+## ✅ Input Validation
+
+The program validates all input and handles:
+- **Non-numeric arguments** → Error
+- **Duplicate numbers** → Error
+- **Integer overflow** (> INT_MAX or < INT_MIN) → Error
+- **Empty arguments** → Error
+- **Single argument with multiple numbers** → Splits and validates
+
+```bash
+# These will output "Error"
+./push_swap 1 2 3 3          # Duplicate
+./push_swap 1 abc 3          # Non-numeric
+./push_swap 2147483648       # Overflow
+./push_swap ""               # Empty
 ```
 
 ## 🧪 Testing
 
-### Using the Checker (Bonus)
-
-The checker verifies if the operations actually sort the stack:
+### Test with Checker
 
 ```bash
-# Successful sort
-$ ARG="4 67 3 87 23"; ./push_swap $ARG | ./checker $ARG
-OK
+# Generate random numbers and test
+ARG="4 67 3 87 23"; ./push_swap $ARG | ./checker_linux $ARG
+# Output: OK (if sorted correctly) or KO (if not)
 
-# Failed sort
-$ echo "sa\npb\nrrr" | ./checker 3 2 1
-KO
+# Test with 100 random numbers
+ARG=$(seq 1 100 | shuf | tr '\n' ' '); ./push_swap $ARG | ./checker_linux $ARG
+
+# Count operations for 100 numbers
+ARG=$(seq 1 100 | shuf | tr '\n' ' '); ./push_swap $ARG | wc -l
 ```
 
-### Automated Testing
+### Performance Testing Script
 
 ```bash
-# Test with 3 numbers (all combinations)
-for i in {1..6}; do
-    ARG=$(seq 1 3 | shuf); 
-    ./push_swap $ARG | wc -l;
+#!/bin/bash
+# test_push_swap.sh
+
+echo "Testing 100 numbers - 100 iterations"
+total=0
+for i in {1..100}; do
+    ARG=$(seq 1 100 | shuf | tr '\n' ' ')
+    COUNT=$(./push_swap $ARG | wc -l)
+    RESULT=$(./push_swap $ARG | ./checker_linux $ARG)
+    total=$((total + COUNT))
+    echo "Test $i: $RESULT - Operations: $COUNT"
 done
+echo "Average: $((total / 100)) operations"
 
-# Test with 5 numbers (average 100 times)
-for i in {1..100}; do
-    ARG=$(seq 1 5 | shuf); 
-    ./push_swap $ARG | wc -l;
-done | awk '{s+=$1} END {print s/NR}'
-
-# Test with 100 numbers
-for i in {1..100}; do
-    ARG=$(seq 1 100 | shuf); 
-    ./push_swap $ARG | wc -l;
-done | sort -n
-
-# Test with 500 numbers
-for i in {1..100}; do
-    ARG=$(seq 1 500 | shuf); 
-    ./push_swap $ARG | wc -l;
-done | sort -n
+echo -e "\nTesting 500 numbers - 20 iterations"
+total=0
+for i in {1..20}; do
+    ARG=$(seq 1 500 | shuf | tr '\n' ' ')
+    COUNT=$(./push_swap $ARG | wc -l)
+    RESULT=$(./push_swap $ARG | ./checker_linux $ARG)
+    total=$((total + COUNT))
+    echo "Test $i: $RESULT - Operations: $COUNT"
+done
+echo "Average: $((total / 20)) operations"
 ```
 
-### Recommended Testers
+## 📊 Performance Requirements
 
-- [SimonCROS/push_swap_tester](https://github.com/SimonCROS/push_swap_tester)
-- [gemartin99/Push-Swap-Tester](https://github.com/gemartin99/Push-Swap-Tester)
+| Input Size | Excellent | Good | Average |
+|------------|-----------|------|---------|
+| 3 numbers  | ≤ 3 ops   | - | - |
+| 5 numbers  | ≤ 12 ops  | - | - |
+| 100 numbers| < 700 ops | < 900 ops | < 1100 ops |
+| 500 numbers| < 5500 ops| < 7000 ops| < 8500 ops |
 
-### Visualizers
+*Radix sort typically performs well within these limits*
 
-Visualize the sorting process:
-- [push_swap_visualizer by o-reo](https://github.com/o-reo/push_swap_visualizer)
-- [push-swap-gui (Python)](https://pypi.org/project/push-swap-gui/)
+## 🔍 Algorithm Details
 
-```bash
-# Using push_swap_visualizer
-python3 pyviz.py `ruby -e "puts (1..100).to_a.shuffle.join(' ')"`
-```
+### Radix Sort Process
 
-## 🧠 Algorithm Strategies
+1. **Initialization Phase** (`normalization.c`)
+   - Assign each element an index (0 to n-1)
+   - Index represents relative position in sorted order
+   - Example: [42, -5, 100, 0] → [-5:0, 0:1, 42:2, 100:3]
 
-### For 3 Numbers
-Simple hardcoded solution:
-- Check all 6 possible permutations
-- Maximum 2 operations needed
+2. **Bit Calculation** (`radixsort.c`)
+   - Calculate number of bits needed: `ceil(log2(size))`
+   - Example: 100 elements need 7 bits
 
-```
-Example: [3, 2, 1]
-sa  -> [2, 3, 1]
-rra -> [1, 2, 3]
-```
+3. **Sorting by Bits**
+   - For each bit position (0 to max_bits):
+     - If bit is 0: push to stack B (`pb`)
+     - If bit is 1: rotate in stack A (`ra`)
+   - After processing all elements, push everything back from B to A (`pa`)
+   - Repeat for next bit position
 
-### For 5 Numbers
-Push smallest 2 to B, sort 3 in A, push back:
-- Push the 2 smallest numbers to B
-- Sort remaining 3 in A
-- Push back from B in correct position
-- Maximum 12 operations
+4. **Result**
+   - After processing all bits, stack A is sorted in ascending order
 
-### For 100-500 Numbers
+### Small Number Optimization
 
-Popular algorithms include:
+**For 2-3 elements:** Direct comparison and swap
+- Maximum 3 operations needed
 
-#### 1. **Chunk/Butterfly Algorithm**
-- Divide numbers into chunks (e.g., 5 chunks for 100 numbers)
-- Push chunks to B in sorted chunks
-- Push back to A using cheapest move
+**For 4-5 elements:**
+- Find smallest element(s)
+- Push to stack B
+- Sort remaining 3 elements in stack A
+- Push back from stack B
+- Maximum ~10-12 operations
 
-#### 2. **Turk Algorithm** (My Implementation)
-- Index all numbers (assign position ranks)
-- Find median and push smaller half to B
-- Use cost calculation for optimal moves
-- Rotate to minimize operations
-
-#### 3. **Radix Sort Adapted**
-- Convert to binary representation
-- Sort by each bit position
-- Very efficient but uses many operations
-
-#### 4. **Quick Sort Inspired**
-- Use pivots to partition
-- Recursively sort partitions
-- Adapted for stack operations
-
-## 🔧 My Implementation
+## 📝 Key Implementation Details
 
 ### Data Structure
-
-I used a **doubly linked list** to represent the stacks:
-
 ```c
-typedef struct s_stack
+typedef struct s_node
 {
-    int             value;
-    int             index;
-    int             pos;
-    int             target_pos;
-    int             cost_a;
-    int             cost_b;
-    struct s_stack  *next;
-    struct s_stack  *prev;
-}   t_stack;
+    int             value;   // Actual integer value
+    int             index;   // Normalized index for radix sort
+    struct s_node   *next;   // Pointer to next node
+} t_node;
 ```
 
-### Algorithm Overview
+### Memory Management
+- All dynamically allocated memory is properly freed
+- Error handling frees stack before exit
+- No memory leaks
 
-1. **Preprocessing**
-   - Index all numbers (smallest = 0, largest = n-1)
-   - This allows working with positions instead of values
-
-2. **Initial Push to B**
-   - Push all except 3 to stack B
-   - Use median/chunk strategy to keep B semi-sorted
-
-3. **Sort Remaining 3 in A**
-   - Use simple 3-number sort
-
-4. **Calculate Costs**
-   - For each element in B, calculate cost to move it to correct position in A
-   - Cost = rotations in A + rotations in B
-
-5. **Execute Cheapest Move**
-   - Find element with lowest cost
-   - Execute the move
-   - Repeat until B is empty
-
-6. **Final Rotation**
-   - Rotate A to put smallest number on top
-
-## 📊 Performance
-
-My implementation achieves:
-
-- **3 numbers**: ≤ 2 operations
-- **5 numbers**: ≤ 10 operations (avg: 7)
-- **100 numbers**: ~900 operations (avg)
-- **500 numbers**: ~7500 operations (avg)
-
-**Grade: 84/100** ⭐
-
-## 💡 Key Insights
-
-### 1. Indexing is Powerful
-Instead of sorting values, sort indices. This simplifies comparisons.
-
-```c
-// Before: compare values
-if (node->value < median_value)
-    
-// After: compare indices  
-if (node->index < median_index)
-```
-
-### 2. Cost Calculation Optimization
-
-```c
-// Calculate combined cost for simultaneous operations
-if ((cost_a > 0 && cost_b > 0) || (cost_a < 0 && cost_b < 0))
-    combined_cost = max(abs(cost_a), abs(cost_b));
-else
-    combined_cost = abs(cost_a) + abs(cost_b);
-```
-
-### 3. Special Cases First
-Handle 3 and 5 numbers separately before general algorithm:
-- They have known optimal solutions
-- Saves operations compared to general algorithm
-
-### 4. Minimize Operations
-Look for opportunities to combine:
-- Use `rr` instead of separate `ra` and `rb`
-- Use `rrr` instead of separate `rra` and `rrb`
-
-## ⚠️ Common Pitfalls
-
-1. **Not Handling Edge Cases**
-   - Already sorted
-   - Reverse sorted
-   - Duplicates (should error)
-   - Non-numeric input
-   - Numbers outside int range
-
-2. **Memory Leaks**
-   - Always free the linked list
-   - Free on error paths too
-
-3. **Wrong Cost Calculation**
-   - Forgetting that rotation can go both ways
-   - Not minimizing when rotations are in same direction
-
-4. **Inefficient for Small Sets**
-   - Using general algorithm for 3-5 numbers
-   - Not special-casing these
-
-## 🎓 What This Project Teaches
-
-- **Algorithm Selection**: Choosing the right tool for the job
-- **Optimization**: Making code not just work, but work *well*
-- **Complexity**: Understanding Big O in practice
-- **Data Structures**: Practical use of linked lists and stacks
-- **Testing**: Importance of comprehensive testing with edge cases
-- **Visualization**: Understanding your algorithm visually
-
-## 📚 Resources
-
-- [Sorting Algorithms](https://www.geeksforgeeks.org/sorting-algorithms/)
-- [Push Swap Tutorial (Medium)](https://medium.com/@jamierobertdawson/push-swap-the-least-amount-of-moves-with-two-stacks-d1e76a71789a)
-- [Big O Notation](https://www.bigocheatsheet.com/)
-- [Visualize Algorithms](https://visualgo.net/en/sorting)
+### Edge Cases Handled
+- Empty input
+- Single element (already sorted)
+- Already sorted input (no operations)
+- Negative numbers
+- Mixed positive and negative numbers
 
 ## 👤 Author
 
-**Motaz**
+**Motaz** (moodeh)
 - GitHub: [@Motaz9999](https://github.com/Motaz9999)
-- Intra: @moodeh
+- 42 Intra: moodeh
+
+## 📚 Learning Outcomes
+
+- Algorithm complexity analysis (time & space)
+- Bit manipulation techniques
+- Stack data structure implementation
+- Memory management in C
+- Input validation and error handling
+- Code optimization strategies
 
 ---
 
-<div align="center">
-
-**⭐ Sorting is easy. Sorting efficiently is an art.**
-
-Made at 42 School
-
-</div>
+**Note:** This is a 42 school project. If you're a student, use this as reference for understanding concepts, not for copying code.
